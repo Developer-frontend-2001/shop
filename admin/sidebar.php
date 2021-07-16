@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+$username = isset($_SESSION['username']) ? $_SESSION['username'] : 'Gita';
+$role_id = isset($_SESSION['role_id']) ? $_SESSION['role_id'] : NULL;
+?>
 <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -14,7 +20,7 @@
           <img src="adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">GITA.uz</a>
+          <a href="#" class="d-block"><?= $username ?></a>
         </div>
       </div>
 
@@ -49,22 +55,25 @@
               <p>Buyurtmalar</p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="products.php" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Mahsulotlar
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="toregion.php" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Viloyatlarga
-              </p>
-            </a>
-          </li>
+          <?php if ($role_id == 1): ?>
+            <li class="nav-item">
+              <a href="products.php" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Mahsulotlar
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="toregion.php" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Viloyatlarga
+                </p>
+              </a>
+            </li>
+          <?php endif ?>
+          
           <li class="nav-item">
             <a href="logout.php" class="nav-link">
               <i class="nav-icon fas fa-sign-out-alt"></i>

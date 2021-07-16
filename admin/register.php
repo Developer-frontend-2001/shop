@@ -12,11 +12,11 @@ if (isset($_POST['first_Name']) && isset($_POST['last_Name']) && isset($_POST['p
     $city_id = $_POST['city_id'];
 
     $insert_user_sql = "INSERT INTO users (username, password, status) VALUES('".$username."', '".$password."', 1)";
-    $result = mysqli_query($conn,$insert_user_sql);
+
     
-    if ($result) {
+    if ($conn->query($insert_user_sql) == TRUE) {
         $user_id = $conn->insert_id;
-//die('aaaa');
+
         $customer_sql = "INSERT INTO customer (user_id, first_Name, last_Name, phone, region_id, city_id) VALUES('".$user_id."', '".$first_Name."', '".$last_Name."', '".$phone."', '".$region_id."', '".$city_id."')";
 
       //   $customer_sql = "INSERT INTO customer (region_id, city_id, first_Name, last_Name, phone, user_id)
@@ -26,7 +26,7 @@ if (isset($_POST['first_Name']) && isset($_POST['last_Name']) && isset($_POST['p
             exit(header("Location: login.php"));
         }
     } else {
-        echo mysqli_error($conn);
+        $conn->error();
     }
 }
 ?>

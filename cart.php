@@ -66,7 +66,7 @@ $all_sum = 0;
 								<td class="remove_cart" data-id="<?= $product['id'] ?>" data-count="<?= $product_count ?>"><b><span style="color: red">x</span></b></td>
 								<td><?= $inc ++ ?></td>
 								<td><?= $product['name'] ?></td>
-								<td><img src="<?= $product['picture'] ?>" width="60px"></td>
+								<td><img src="<?= str_replace("../", "", $product['picture']) ?>" width="60px"></td>
 								<td><?= $product['amount'] ?></td>
 								<td><input type="number" class="product_count" data-p_id="<?= $product['id'] ?>" min="1" name="product_count" value="<?= $product_count ?>"></td>
 								<td align="right"><?= $product_count * $product['amount'] ?></td>

@@ -14,6 +14,8 @@ $username = $_POST['username'];
         
         if($result = $conn->query($sql)) {
             $user = mysqli_fetch_assoc($result);
+            
+            $_SESSION['customer_id'] = NULL;
 
             $sql_customer = "SELECT * FROM customer WHERE user_id='".$user['id']."'";
             if($result = $conn->query($sql_customer)) {
@@ -28,6 +30,7 @@ $username = $_POST['username'];
             $_SESSION['timeout'] = time();
             $_SESSION['id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
+            $_SESSION['role_id'] = $user['role_id'];
 
             if ($_SESSION['cart']['count'] > 0) {
               echo("<script>location.href = 'cabinet.php';</script>");

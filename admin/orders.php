@@ -5,6 +5,8 @@ require_once "../db.php";
 require_once "header.php";
 
 require_once "sidebar.php";
+
+$customer_id = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : NULL;
 ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -41,7 +43,9 @@ require_once "sidebar.php";
 					  </thead>
 					  <tbody>
 						<?php
-							$sql = "SELECT orders.id, orders.product_id, product.name AS mah_nomi, orders.status_id, orders.count AS soni, CONCAT(customer.first_Name, ' ', customer.last_Name) as mijoz, customer.phone AS telefon, region.name AS viloyat, date FROM `orders` INNER JOIN product ON orders.product_id = product.id INNER JOIN customer ON orders.customer_id = customer.id INNER JOIN region ON customer.region_id = region.id WHERE 1 ORDER BY date DESC";
+							$where = $customer_id ? 'orders.customer_id='.$customer_id : 1;
+							
+							$sql = "SELECT orders.id, orders.product_id, product.name AS mah_nomi, orders.status_id, orders.count AS soni, CONCAT(customer.first_Name, ' ', customer.last_Name) as mijoz, customer.phone AS telefon, region.name AS viloyat, date FROM `orders` INNER JOIN product ON orders.product_id = product.id INNER JOIN customer ON orders.customer_id = customer.id INNER JOIN region ON customer.region_id = region.id WHERE $where ORDER BY date DESC";
 							//DATE(orders.date) = DATE(NOW())
 						$i = 1;
 						foreach ($conn->query($sql) as $row) {
