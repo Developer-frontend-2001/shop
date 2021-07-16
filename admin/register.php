@@ -26,7 +26,7 @@ if (isset($_POST['first_Name']) && isset($_POST['last_Name']) && isset($_POST['p
             exit(header("Location: login.php"));
         }
     } else {
-        $conn->error();
+        // $conn->error();
     }
 }
 ?>
