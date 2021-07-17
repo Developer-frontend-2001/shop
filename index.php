@@ -34,7 +34,7 @@ session_start();
 					      <a href="#">
 					        <img src="<?= str_replace("../", "", $row['picture']) ?>" alt="Lights" style="width:100%">
 					        <div class="caption">
-					        	<h4><?= $row['name'] ?></h4>
+					        	<h4><a href="product.php?id=<?= $row['id'] ?>"><?= $row['name'] ?></a></h4>
 					          	<p>
 					          		<button class="btn btn-info btn-sm"><?= $row['amount'] ?> so'm</button>
 					          	</p>
