@@ -1,6 +1,7 @@
 <?php
 require_once "auth.php";
 require_once "../db.php";
+session_start();
 
 $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : NULL;
 $customer_id = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : NULL;
@@ -28,9 +29,6 @@ if ($cart && $customer_id) {
 	}
 	unset($_SESSION['cart']);
 	
-} else {
-	 // header('Refresh: 1; URL = login.php');
-	echo("<script>location.href = 'login.php';</script>");
-}
+} 
 
 ?>

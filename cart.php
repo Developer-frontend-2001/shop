@@ -38,7 +38,7 @@ $all_sum = 0;
 <body>
 	<?php require_once "menu.php"; ?>
 
-	<div class="container-fluid">
+	<div class="container-fluid" style ="margin-top: 150px;">
 		<div class="row">
 			<h3 style="text-align: center;">Savatcha</h3>
 			<?php if ($cart['count']): ?>
@@ -59,8 +59,15 @@ $all_sum = 0;
 
 						<?php foreach ($conn->query($sql_cart) as $key => $product): ?>
 							<?php
-								$product_count = isset($arr[$product['id']]) ? $arr[$product['id']] : 0;
-								$all_sum += $product_count * $product['amount'];
+							$product_count = isset($arr[$product['id']]) ? $arr[$product['id']] : 0;
+							$all_sum += $product_count * $product['amount'];
+
+							if (isset($_SESSION['product_url']) and isset($_SESSION['username']) and $product_count > 0) {
+								echo("<script>location.href = 'admin/cabinet.php?'  ;</script>");								
+							}
+							else {
+								echo("<script>location.href = 'admin/login.php?'  ;</script>");
+							}
 							?>
 							<tr>
 								<td class="remove_cart" data-id="<?= $product['id'] ?>" data-count="<?= $product_count ?>"><b><span style="color: red">x</span></b></td>
@@ -79,7 +86,7 @@ $all_sum = 0;
 					</tbody>
 				</table>
 				<div class="clearfix"></div>
-				<a href="admin/cabinet.php" class="btn btn-primary pull-right">Buyurtma berish</a>
+				<button type="submit" data-bs-toggle="button" autocomplete="off"   class="btn btn-primary pull-right">Buyurtma berish</button>
 			<?php else: ?>
 				<div class="clearfix"></div>
 				<p>Savatcha bo'sh</p>
@@ -106,9 +113,9 @@ $all_sum = 0;
 		    	// console.log(data);
 		    },
 		    error: function (jqXHR, textStatus, errorThrown) {
-				console.log(jqXHR);
-		      	console.log(textStatus);
-		      	console.log(errorThrown);
+		    	console.log(jqXHR);
+		    	console.log(textStatus);
+		    	console.log(errorThrown);
 		    }
 		});
 	});
@@ -125,12 +132,12 @@ $all_sum = 0;
 			data: { product_id: id, count: count},
 			success: function(data) {
 				location.reload();
-		    },
-		    error: function (jqXHR, textStatus, errorThrown) {
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
 				console.log(jqXHR);
-		      	console.log(textStatus);
-		      	console.log(errorThrown);
-		    }
+				console.log(textStatus);
+				console.log(errorThrown);
+			}
 		});
 	});
 </script>
