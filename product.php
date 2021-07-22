@@ -39,14 +39,6 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 	$sql_users = "SELECT * FROM users WHERE username = '".$username."'";
 	$result = mysqli_query($conn, $sql_users);
 	$users = mysqli_fetch_assoc($result);
-	if ( isset($_POST['comment_text']) && $_POST['comment_text']) {
-
-		if (!empty($_POST['comment_text']) and $username  !== NULL) {
-			$sql_comment_insert = "INSERT INTO comment (user_id, product_id, comment_text, status) VALUES(".$users['id'].", ".$product['id'].", '".$_POST['comment_text']."', 1)";
-			$_POST['comment_text'] = '';
-
-		}
-	}
 	$_SESSION['product_url'] ="../product.php?id=".$product['id']."";
 
 	?>
@@ -110,7 +102,7 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 						Kommentariyalar
 						<div class="container-sm">
 							<?php 
-							$sql_comment = "SELECT users.username as username, comment.*  FROM `comment` 
+							$sql_comment = "SELECT users.username as username, users.id as user_id comment.*  FROM `comment` 
 							INNER JOIN  users ON comment.user_id = users.id WHERE comment.status = 1 and comment.product_id = ".$product['id']." ORDER BY create_date";
 							$result = mysqli_query($conn, $sql_comment);
 
@@ -132,7 +124,7 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 							<form method="POST">
 								<textarea id="comment_text" name="comment_text"  max-rows="6" min-cols="20" class="form-control mb-3" placeholder="Bu yerda izoh yoziladi. Kamida 50 ta bo'lishi kerak" ></textarea>
 
-								<button type="submit" data-id="<?= $product['id'] ?>" class="btn btn-primary btn_push btn-sm ">Izoh qoldirish</button>
+								<button type="submit" data-p_id="<?= $product['id'] ?>" data-u_id="<?= $users['id'] ?>" class="btn btn-primary btn_push btn-sm ">Izoh qoldirish</button>
 
 
 							</form>
@@ -227,13 +219,14 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 
 	// Comment text jadvaliga qo'shish
 	$(".btn_push").click(function(){
-		let id = $(this).data('id');
+		let p_id = $(this).data('p_id');
+		let u_id = $(this).data('u_id');
 		$.ajax({
 			method: "GET",
 			url: "product_comment.php",
-			data: { product_id: id },
+			data: { product_id: p_id, user_id: u_id },
 			success: function(data) {
-				$('.container-sm').appendChild(data);
+				// $('.container-sm').appendChild(data);
 				console.log(data);
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
