@@ -2,7 +2,7 @@
 require_once('db.php');
 
 session_start();
-session_destroy();
+// session_destroy();
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 ?>
 <!DOCTYPE html>
@@ -102,13 +102,13 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 						Kommentariyalar
 						<div class="container-sm">
 							<?php 
-							$sql_comment = "SELECT users.username as username, users.id as user_id comment.*  FROM `comment` 
-							INNER JOIN  users ON comment.user_id = users.id WHERE comment.status = 1 and comment.product_id = ".$product['id']." ORDER BY create_date";
+							$sql_comment = "SELECT users.username as username, users.id as user_id, comment.comment_text as comment_text, comment.create_date as create_date
+							  FROM `comment` 
+							INNER JOIN  users ON comment.user_id = users.id 
+							WHERE comment.status = 1 and comment.product_id = ".$product['id']." ORDER BY create_date";
 							$result = mysqli_query($conn, $sql_comment);
-
-
 							?>
-							<div class="row d-flex flex-column ">
+							<div class="row d-flex flex-column comment-item">
 								<?php while ($comment = mysqli_fetch_assoc($result)): ?>
 									<div class="col-12 col-md-6 bg-light mb-3 rounded pos-relative" style="border: 2px solid #819696;">
 										<h1 class="h5 font-bold" style="font-style: italic;"><?=$comment['username']?></h1>
@@ -124,7 +124,7 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 							<form method="POST">
 								<textarea id="comment_text" name="comment_text"  max-rows="6" min-cols="20" class="form-control mb-3" placeholder="Bu yerda izoh yoziladi. Kamida 50 ta bo'lishi kerak" ></textarea>
 
-								<button type="submit" data-p_id="<?= $product['id'] ?>" data-u_id="<?= $users['id'] ?>" class="btn btn-primary btn_push btn-sm ">Izoh qoldirish</button>
+								<button id="btn_push" type="submit" data-p_id="<?= $product['id'] ?>" data-u_id="<?= $users['id'] ?>" class="btn btn-primary btn_push btn-sm ">Izoh qoldirish</button>
 
 
 							</form>
@@ -218,7 +218,7 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 
 
 	// Comment text jadvaliga qo'shish
-	$(".btn_push").click(function(){
+	$("#btn_push").click(function(){
 		let p_id = $(this).data('p_id');
 		let u_id = $(this).data('u_id');
 		$.ajax({
@@ -226,7 +226,7 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 			url: "product_comment.php",
 			data: { product_id: p_id, user_id: u_id },
 			success: function(data) {
-				// $('.container-sm').appendChild(data);
+				$('.comment-item').append(data);
 				console.log(data);
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
