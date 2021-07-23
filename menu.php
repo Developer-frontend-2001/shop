@@ -6,7 +6,7 @@ session_start();
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 $cart_count = (isset($_SESSION['cart']) && isset($_SESSION['cart']['count'])) ? $_SESSION['cart']['count'] : 0;
 
-
+var_dump($_SESSION);
 ?>
 <nav class=" navbar navbar-expand-lg navbar-light bg-light fixed-top ">
     <a class="navbar-brand" href="index.php">Sport magazin</a>
@@ -45,14 +45,5 @@ $cart_count = (isset($_SESSION['cart']) && isset($_SESSION['cart']['count'])) ? 
             <span>Shopping</span>
             <span id="shopping_cart"><?= $cart_count ?></span>
         </a>
-        <div id="google_translate_element"></div>
     </div>
-</nav> 
-<script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-  }
-</script>
-
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
+</nav>

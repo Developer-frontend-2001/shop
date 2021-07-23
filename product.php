@@ -25,6 +25,9 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 		transform: scale(0.97);
 		font-size: 16px;
 	}
+	textarea:active{
+		background-color: lightgreen;
+	}
 </style>
 </head>
 <body>

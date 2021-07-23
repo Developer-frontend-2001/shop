@@ -17,6 +17,15 @@ $result = "";
 $count=0;
 ?>
 <?php foreach ($conn->query($sql_product) as $row): ?>
+	<?php 
+	$t ='';
+	if(empty($row['amount'])) {
+		$t = "Tekin";
+	}
+	else {
+		$t = $row['amount']."so'm" ;
+	}
+	?> 
 	<?php $result .= '<div class="col-md-3">
 	<div class="card mt-4">
 	<div class="thumbnail" style="border: 1px solid #eee; min-height: 332px; padding: 5px">
@@ -25,15 +34,7 @@ $count=0;
 	<div class="caption" style="position: absolute; bottom: 0; ">
 	<h4><a href="product.php?id= '.$row['id'].' " >'. $row['name'].'</a></h4>
 	<p>
-	<button class="btn btn-info btn-sm">';
-	$result .= if(empty($row['amount'])) {
-		"Tekin";
-	}
-	else {
-		$row['amount'] "so'm";
-	}
-
-	$result .='</button>
+	<button class="btn btn-info btn-sm">'.$t.'</button>
 	</p>
 	<button class="btn btn-warning add_product btn-sm w-100" data-id="'. $row['id'] .'">Cart</button>
 	</div>

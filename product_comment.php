@@ -3,6 +3,7 @@ require_once "db.php";
 session_start();
 // session_destroy();
 if (isset($_GET['product_id']) && isset($_GET['user_id'])) {
+	var_dump($_GET);
 	$product_id = $_GET['product_id'];
 	$user_id = $_GET['user_id'];
 	$data ='';
