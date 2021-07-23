@@ -3,6 +3,7 @@ require_once "db.php";
 
 $sql_product = "SELECT * FROM product WHERE 1 ORDER BY id DESC LIMIT 4";
 
+
 if (isset($_GET['last_id']) && $_GET['last_id']) {
 	$last_id = $_GET['last_id'];
 	if ($last_id >= 4 ) {
