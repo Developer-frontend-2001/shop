@@ -41,8 +41,8 @@ if (isset($_POST['first_Name']) && isset($_POST['last_Name']) && isset($_POST['p
       $customer_sql = "INSERT INTO customer (user_id, first_Name, last_Name, phone, region_id, city_id, image) VALUES (".$user_id.", '".$first_Name."', '".$last_Name."', ".$phone.", '".$region_id."', ".$city_id.", '".$file_url."')";
 
       if ($conn->query($customer_sql) == TRUE) {
-        echo "Urra ishladi";
-        // exit(header("Location:".$_SESSION['product_url'])); 
+    
+        exit(header("Location:".$_SESSION['product_url'])); 
       }
       else {
 

@@ -16,6 +16,7 @@ $count = $last_id;
 ?>
 <?php foreach ($conn->query($sql_product) as $row): ?>
 	<?php 
+	$count++;
 	$t ='';
 	if(empty($row['amount'])) {
 		$t = "Tekin";
@@ -34,13 +35,12 @@ $count = $last_id;
 	<p>
 	<button class="btn btn-info btn-sm">'.$t.'</button>
 	</p>
-	<button class="btn btn-warning add_product btn-sm w-100" data-id="'. $last_id .'">Cart</button>
+	<button class="btn btn-warning add_product btn-sm w-100" data-id="'. $count .'">Cart</button>
 	</div>
 	</a>
 	</div>
 	</div>
 	</div>';
-	$count++;
 	?>
 <?php endforeach ?>
 <?php 

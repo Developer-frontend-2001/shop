@@ -32,6 +32,7 @@ session_start();
 		<div class="row" id="products">
 			<?php $count = 0; ?>
 			<?php foreach ($conn->query($sql_product) as $row): ?>
+				<?php $count++ ?>	
 				<div class="col-md-3">
 					<div class="card mt-4">
 						<div class="thumbnail" style="border: 1px solid #eee; min-height: 332px; padding: 5px">
@@ -48,13 +49,12 @@ session_start();
 											<?php endif ?>
 										</button>
 									</p>
-									<button class="btn btn-warning add_product btn-sm w-100" data-id="<?= $row['id'] ?>">Cart</button>
+									<button class="btn btn-warning add_product btn-sm w-100" data-id="<?=$count?>">Cart</button>
 								</div>
 							</a>
 						</div>
 					</div>
 				</div>
-				<?php $count++ ?>	
 			<?php endforeach ?>
 			<?php $last_id = $count; ?>
 			<div class="clearfix"></div>
