@@ -1,8 +1,8 @@
 <?php
 require_once "../db.php";
-
+session_start();
 if (isset($_POST['first_Name']) && isset($_POST['last_Name']) && isset($_POST['phone']) && isset($_POST['region_id']) && isset($_POST['city_id']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['password_two']) && isset($_FILES['picture'])) {
-
+  echo $_SESSION;
   $username = $_POST['username'];
   $password = $_POST['password'];
   $first_Name = $_POST['first_Name'];
@@ -33,14 +33,19 @@ if (isset($_POST['first_Name']) && isset($_POST['last_Name']) && isset($_POST['p
     move_uploaded_file($file_tmp, $upload_folder . $file_name);
     $file_url = $upload_folder.$file_name;
     $insert_user_sql = "INSERT INTO users (username, password, status) VALUES('".$username."', '".$password."', 1)";
+        echo "Urra ishladi";
 
     if ($conn->query($insert_user_sql) == TRUE) {
       $user_id = $conn->insert_id;
 
-      $customer_sql = "INSERT INTO customer (user_id, first_Name, last_Name, phone, region_id, city_id, image) VALUES ('".$user_id."', '".$first_Name."', '".$last_Name."', '".$phone."', '".$region_id."', '".$city_id."', '".$file_url."')";
+      $customer_sql = "INSERT INTO customer (user_id, first_Name, last_Name, phone, region_id, city_id, image) VALUES (".$user_id.", '".$first_Name."', '".$last_Name."', ".$phone.", '".$region_id."', ".$city_id.", '".$file_url."')";
 
       if ($conn->query($customer_sql) == TRUE) {
-        exit(header("Location: login.php"));
+        echo "Urra ishladi";
+        // exit(header("Location:".$_SESSION['product_url'])); 
+      }
+      else {
+
       }
     } else {
       $conn->error();

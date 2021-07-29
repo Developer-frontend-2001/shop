@@ -110,13 +110,16 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 							INNER JOIN  users ON comment.user_id = users.id 
 							WHERE comment.status = 1 and comment.product_id = ".$product['id']." ORDER BY create_date";
 							$result = mysqli_query($conn, $sql_comment);
+							if (isset($_POST['comment_text']) && $_POST['comment_text']) {
+								$_SESSION['comment_text'] = $_POST['comment_text'];
+							}
 							?>
 							<div class="row d-flex flex-column comment-item">
 								<?php while ($comment = mysqli_fetch_assoc($result)): ?>
 									<div class="col-12 col-md-6 bg-light mb-3 rounded pos-relative" style="border: 2px solid #819696;">
 										<h1 class="h5 font-bold" style="font-style: italic;"><?=$comment['username']?></h1>
 										<p class="fs-6 fw-lighter" style="display: block;"><?=$comment['comment_text']?></p>
-										<p class="fs-6 text-muted" style="float: right; display: block; position: relative;"><?=$comment['create_date']?></p>
+										<p class="fs-6 text-muted" style="float: right; display: block; position: relative;"><?=date('d.m.Y H:i', strtotime($comment['create_date']))?></p>
 									</div>	
 								<?php endwhile ?>
 							</div>

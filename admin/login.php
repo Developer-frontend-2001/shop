@@ -1,64 +1,111 @@
 <?php
 session_start();
-require_once "../db.php";
 
-$msg = '';
-
-if (!empty($_POST['username']) 
- && !empty($_POST['password'])) {
-  $username = $_POST['username'];
-$password = $_POST['password'];
-
-$sql = "SELECT * FROM users WHERE username='$username' AND status=1 AND password = ".$password."";
-
-if($result = $conn->query($sql)) {
-  $user = mysqli_fetch_assoc($result);
-
-  $_SESSION['customer_id'] = NULL;
-
-  $sql_customer = "SELECT * FROM customer WHERE user_id='".$user['id']."'";
-  if($result = $conn->query($sql_customer)) {
-    $customer = mysqli_fetch_assoc($result);
-
-    if ($customer) {
-      $_SESSION['customer_id'] = $customer['id'];
-    }
-  }
-
-  $_SESSION['valid'] = true;
-  $_SESSION['timeout'] = time();
-  $_SESSION['id'] = $user['id'];
-  $_SESSION['username'] = $user['username'];
-  $_SESSION['role_id'] = $user['role_id'];
-  $product_url = $_SESSION['product_url'];
-//   echo "<pre>";
-//   print_r($_SESSION);
-//   echo "</pre>";
-// die();
-  if ($_SESSION['cart']['count'] > 0) {
-    if (!empty($product_url)) {
-      echo("<script>location.href = '".$product_url."';</script>");
-    }
-    else
-      echo("<script>location.href = 'cabinet.php';</script>");
-  } 
-  else{
-    if (!empty($product_url)) {
-      echo("<script>location.href = '".$product_url."';</script>");
-    }
-    else
-      echo("<script>location.href = '../index.php';</script>");
-  }
-
-} else {
-  $msg = 'Username yoki parol xato';
-}
-}
-?>
-
-<?
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+
+require_once "../db.php";
+
+$permission_array = [];
+$old_role_name = '';
+if (isset($_SESSION['product_url'])) {
+  $product_url = $_SESSION['product_url'];
+}
+
+  // role nomi bo'yicha routelarni yig'ish
+function pages($role_name) {
+  GLOBAL $conn;
+  GLOBAL $permission_array;
+  GLOBAL $old_role_name;
+
+    // sikllanib qolishni oldini oldini maqsadida yozildi
+  if ($old_role_name == $role_name) {
+    return 1;
+  }
+
+  $old_role_name = $role_name;
+
+  $sql_child = "SELECT * FROM auth_item_child WHERE parent='".$role_name."'";
+    // auth_item_child dan har bir qatorni child ma'lumoti olinmoqda
+  $result = $conn->query($sql_child);
+
+  if ($result) {
+    while ($item_child = mysqli_fetch_assoc($result)) {
+      $role_name = $item_child['child'];
+
+      $sql_route = "SELECT * FROM auth_item WHERE type=3 AND name='".$role_name."'";
+        // child ma'lumot asosida auth_item dan faqat route (type=3 yoki url) lar massivga yig'ilmoqda
+      $result2 = $conn->query($sql_route);
+
+      if ($result2) {
+        $route = mysqli_fetch_assoc($result2);
+
+        $permission_array[] = $route['name'];
+      }
+    }
+
+    return pages($role_name);
+  }
+}
+
+$msg = '';
+if (!empty($_POST['username']) && !empty($_POST['password'])) {
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+
+  $sql = "SELECT * FROM users WHERE username='$username' AND password='$password' AND status=1";
+
+  if($result = $conn->query($sql)) {
+    $user = mysqli_fetch_assoc($result);
+
+    $_SESSION['customer_id'] = NULL;
+
+    $sql_customer = "SELECT * FROM customer WHERE user_id='".$user['id']."'";
+    if($result = $conn->query($sql_customer)) {
+      $customer = mysqli_fetch_assoc($result);
+
+      if ($customer) {
+        $_SESSION['customer_id'] = $customer['id'];
+      }
+    }
+
+    $_SESSION['valid'] = true;
+    $_SESSION['timeout'] = time();
+    $_SESSION['id'] = $user['id'];
+    $_SESSION['username'] = $user['username'];
+    $_SESSION['role_id'] = $user['role_id'];
+
+    $sql_role = "SELECT * FROM roles WHERE role_id=".$user['role_id'];
+
+    $result = $conn->query($sql_role);
+
+    if ($result) {
+      $role = mysqli_fetch_assoc($result);
+
+      if ($role) {
+        $role_name = $role['role_name'];
+
+
+        pages($role_name);
+
+        $_SESSION['pages'] = $permission_array;
+      }
+    }
+    if ($product_url) {
+      header("Location: ".$product_url);
+    }
+    elseif ($_SESSION['cart']['count'] > 0) {
+
+      echo("<script>location.href = 'cabinet.php';</script>");
+
+    } else {
+      echo("<script>location.href = 'index.php';</script>");
+    }
+
+  } else {
+    $msg = 'Username yoki parol xato';
+  }
+}
 ?>
 
 <!DOCTYPE html>

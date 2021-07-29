@@ -1,13 +1,10 @@
 <?php
 require_once "db.php";
 
-$sql_product = "SELECT * FROM product WHERE 1 ORDER BY id DESC LIMIT 4";
-
-
 if (isset($_GET['last_id']) && $_GET['last_id']) {
 	$last_id = $_GET['last_id'];
 	if ($last_id >= 4 ) {
-		$sql_product = "SELECT * FROM product WHERE id < $last_id ORDER BY id DESC LIMIT 4";
+		$sql_product = "SELECT * FROM product WHERE id > $last_id ORDER BY id ASC LIMIT 4";
 	}
 	else {
 
@@ -15,7 +12,7 @@ if (isset($_GET['last_id']) && $_GET['last_id']) {
 }
 
 $result = "";
-$count=0;
+$count = $last_id;
 ?>
 <?php foreach ($conn->query($sql_product) as $row): ?>
 	<?php 
@@ -37,7 +34,7 @@ $count=0;
 	<p>
 	<button class="btn btn-info btn-sm">'.$t.'</button>
 	</p>
-	<button class="btn btn-warning add_product btn-sm w-100" data-id="'. $row['id'] .'">Cart</button>
+	<button class="btn btn-warning add_product btn-sm w-100" data-id="'. $last_id .'">Cart</button>
 	</div>
 	</a>
 	</div>
@@ -52,7 +49,7 @@ $last_id = $count;
 
 <?php
 if (!empty($result)) {
-	$result .= '<div class="col-md-4 my-5 offset-4" id="more_'. $row['id'] .'" >
+	$result .= '<div class="col-md-4 my-5 offset-4" id="more_'. $last_id .'" >
 	<button class="btn btn-primary w-100 btn-outline-primary add_more" data-id="'. $last_id .'">Ko\'proq ko\'rish</button>
 	</div>
 	<div class="clearfix"></div>

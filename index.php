@@ -2,7 +2,7 @@
 require_once('db.php');
 
 session_start();
-session_destroy();
+// session_destroy();
 ?>
 
 
@@ -12,6 +12,7 @@ session_destroy();
 	<meta charset="utf-8">
 	<title>Shop.loc</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 </head>
 <body>
 	<?php require_once "menu.php"; ?>
@@ -21,7 +22,7 @@ session_destroy();
 		$where = 'category_id = '.$_GET['category_id'];
 	}
 
-	$sql_product = "SELECT * FROM product WHERE $where ORDER BY id DESC LIMIT 4";
+	$sql_product = "SELECT * FROM product WHERE $where ORDER BY id ASC LIMIT 4";
 	$last_id = 0;
 	$_SESSION['product_url'] = "../index.php";
 	?>
@@ -59,7 +60,7 @@ session_destroy();
 			<div class="clearfix"></div>
 			<?php if ($last_id >= 4): ?>
 
-				<div class="col-md-4 my-5 offset-4" id="more_<?= $row['id'] ?>">
+				<div class="col-md-4 my-5 offset-4" id="more_<?= $last_id?>">
 					<button class="btn btn-primary w-100 btn-outline-primary add_more" data-id="<?= $last_id ?>">Ko'proq ko'rish</button>
 				</div>
 			<?php endif ?>
@@ -67,7 +68,9 @@ session_destroy();
 	</div>
 </body>
 </html>
-<script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	
@@ -113,4 +116,16 @@ session_destroy();
 		});
 	});
 
+$( "#product_search" ).autocomplete({
+       source: 'search.php',
+       // minLength: 1,
+       focus: function( event, ui ) {
+            $( "#product_search" ).val( ui.item.value );
+            return false;
+        },
+        select: function( event, ui ) {
+            $( "#product_search" ).val( ui.item.id );
+            return true;
+        }
+    });
 </script>
