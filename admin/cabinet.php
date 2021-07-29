@@ -20,7 +20,7 @@ if ($cart && $customer_id) {
 		}
 		$sql_cart = "INSERT INTO orders (count, customer_id, product_id) VALUES('".$value['count']."', '".$customer_id."', '".$product_id."')";
 		if ($conn->query($sql_cart) == TRUE) {
-			echo "Ma'lumot qo'shildi<br>";
+			header("Location: index.php");
 
 			unset($_SESSION['cart'][$product_id]);
 		} else {
