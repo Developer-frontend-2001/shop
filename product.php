@@ -10,6 +10,7 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 <head>
 	<meta charset="utf-8">
 	<title>Shop.loc</title>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" crossorigin="anonymous">
 	<script type='text/javascript' src='http://code.jquery.com/jquery.min.js'></script>
 	<style>
@@ -191,6 +192,8 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 		</div>
 	</div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"  crossorigin="anonymous"></script>
 <script type="text/Javascript">
 	$("#comment_text").mousemove(function(){
@@ -244,4 +247,5 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 	})
 	
 </script>
+<script src="js/search_selectors.js"></script>
 </html>
