@@ -73,6 +73,7 @@ if (isset($_POST['name']) && isset($_POST['category_id']) && isset($_POST['amoun
         <?php 
             $sql = "SELECT * FROM category";
             $result = mysqli_query($conn, $sql);
+            print_r($_FILES);
          ?>
         <form method="POST" enctype="multipart/form-data">
 				<div class="col-md-12">

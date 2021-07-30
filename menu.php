@@ -1,11 +1,13 @@
 <?php
 require_once "db.php";
-
+// session_start();
 $sql = "SELECT * FROM category LIMIT 6";
 $result = mysqli_query($conn, $sql);
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
 $cart_count = (isset($_SESSION['cart']) && isset($_SESSION['cart']['count'])) ? $_SESSION['cart']['count'] : 0;
-
+$users = "SELECT * FROM users WHERE username ='".$username."'";
+$result_users = mysqli_query($conn, $users);
+$result_users = mysqli_fetch_assoc($result_users);
 ?>
 <nav class=" navbar navbar-expand-lg navbar-light bg-light fixed-top" style="z-index: 1;">
     <a class="navbar-brand" href="index.php">Sport magazin</a>
@@ -31,12 +33,12 @@ $cart_count = (isset($_SESSION['cart']) && isset($_SESSION['cart']['count'])) ? 
 
     </div>
     <div class="col-md-5 d-flex align-items-center"  >
-        <?php if ($username === NULl): ?>
+        <?php if (empty($username)): ?>
             <a class="btn mx-4 my-2 btn-info" href="admin/login.php">Kirish</a>
             <a class="btn mx-4 my-2 btn-outline-success" href="admin/register.php">Ro'yxatdan o'tish</a>
         <?php else: ?>
             <div class="user d-flex align-items-center justify-content-center">
-
+                <img src="<?= str_replace("../", "", $result_users['image_url']) ?>" class="img-fluid rounded-circle" alt="rasm yuklanmagan" width="50px;">
                 <h3 class="h4 p-3 bg-light rounded" style="font-weight: bold; text-transform: capitalize; font-family: monospace; font-size: 25px;"><?=$username?></h3>
             </div>
         <?php endif ?>
