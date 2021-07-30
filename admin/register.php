@@ -1,70 +1,70 @@
-<?php
-require_once "../db.php";
-session_start();
-// session_destroy();
-if (isset($_POST['first_Name']) && isset($_POST['last_Name']) && isset($_POST['phone']) && isset($_POST['region_id']) && isset($_POST['city_id']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['password_two'])) {
+  <?php
+  require_once "../db.php";
+  // session_start();
+  if (isset($_POST['first_Name']) && isset($_POST['last_Name']) && isset($_POST['phone']) && isset($_POST['region_id']) && isset($_POST['city_id']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['password_two'])) {
 
-  $username = $_POST['username'];
-  $password = $_POST['password'];
-  $first_Name = $_POST['first_Name'];
-  $last_Name = $_POST['last_Name'];
-  $phone = $_POST['phone'];
-  $region_id = $_POST['region_id'];
-  $city_id = $_POST['city_id'];
-
-  if (isset($_SESSION['product_url']) && $_SESSION['product_url']) {
-    $product_url = $_SESSION['product_url'];
-  }
-
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $first_Name = $_POST['first_Name'];
+    $last_Name = $_POST['last_Name'];
+    $phone = $_POST['phone'];
+    $region_id = $_POST['region_id'];
+    $city_id = $_POST['city_id'];
 // Images add url begin
-  if (isset($_FILES['picture'])) {
+    if (isset($_FILES['picture'])) {
     // code...
-    $upload_folder = "../images/";
-    $errors = array();
+      $upload_folder = "../images/";
+      $errors = array();
 
-    $file_name = $_FILES['picture']['name'];
-    $file_size = $_FILES['picture']['size'];
-    $file_tmp = $_FILES['picture']['tmp_name'];
-    $file_type = $_FILES['picture']['type'];
-    $file_format_arr = explode('.', $file_name);
-    $file_ext = strtolower(end($file_format_arr));
+      $file_name = $_FILES['picture']['name'];
+      $file_size = $_FILES['picture']['size'];
+      $file_tmp = $_FILES['picture']['tmp_name'];
+      $file_type = $_FILES['picture']['type'];
+      $file_format_arr = explode('.', $file_name);
+      $file_ext = strtolower(end($file_format_arr));
 
-    $extensions = array("jpeg", "jpg", "png");
+      $extensions = array("jpeg", "jpg", "png");
 
-    if (in_array($file_ext, $extensions) === false) {
-      $errors[] = "Fayl formati JPEG yoki PNG bo`lishi kerak.";
-    }
-
-    if ($file_size > 16384) {
-      $errors[] = 'File hajmi 2 MB dan katta bo`lmasligi kerak';
-    }
-
-    if (!empty($errors)) {
-      move_uploaded_file($file_tmp, $upload_folder . $file_name);
-
-      $file_url = $upload_folder.$file_name;
-
-      $insert_user_sql = "INSERT INTO users (username, password, status, image_url) VALUES('".$username."', '".$password."', 1, '".$file_url."')";
-      $users_sql = "SELECT * FROM users WHERE  username = '".$username."'";
-      $sql = "INSERT INTO customer( first_Name, last_Name, phone, region_id, city_id, image) values('$first_Name', '$last_Name', $phone, $region_id, $city_id, '$file_url')";
-
-
-      if ($conn->query($insert_user_sql) === TRUE) {
-        echo "Yuklandi insert ko'rdingmi";
-        if ($conn->query($sql) === TRUE) {
-         header("Location:". $product_url);
-       } else {
-        header("Location: index.php");
+      if (in_array($file_ext, $extensions) === false) {
+        $errors[] = "Fayl formati JPEG yoki PNG bo`lishi kerak.";
       }
-    } else {
-      echo "Xatolik: ".$conn->error;
-    } 
+
+      if ($file_size > 16384) {
+        $errors[] = 'File hajmi 2 MB dan katta bo`lmasligi kerak';
+      }
+
+      if (!empty($errors)) {
+        move_uploaded_file($file_tmp, $upload_folder . $file_name);
+
+        $file_url = $upload_folder.$file_name;
+
+        $insert_user_sql = "INSERT INTO users (username, password, status, image_url) VALUES('".$username."', '".$password."', 1, '".$file_url."')";
+        $users_sql = "SELECT * FROM users WHERE  username = '".$username."'";
+        $sql = "INSERT INTO customer( first_Name, last_Name, phone, region_id, city_id, image) values('$first_Name', '$last_Name', $phone, $region_id, $city_id, '$file_url')";
+
+        if ($conn->query($insert_user_sql) === TRUE) {
+          // echo "Yuklandi insert ko'rdingmi";
+          if ($conn->query($sql) === TRUE) {
+           // echo "Yuklandi";
+
+           if (isset($_SESSION['product_url']) && $_SESSION['product_url']) {
+            $product_url = $_SESSION['product_url'];
+            header($product_url);
+          }
+          else{
+            header("index.php");  
+          }
 
 
-  } else {
-    print_r($errors);
-  }
-}
+        } else {
+          echo "Xatolik: ".$conn->error;
+        } 
+
+
+      } else {
+        print_r($errors);
+      }
+    }
 // Images add url begin
 
 
@@ -75,6 +75,7 @@ if (isset($_POST['first_Name']) && isset($_POST['last_Name']) && isset($_POST['p
 
 
 
+  }
 }
 ?>
 <!DOCTYPE html>
