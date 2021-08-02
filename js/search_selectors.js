@@ -1,5 +1,5 @@
 $( "#product_search" ).autocomplete({
- source: 'search.php',
+   source: 'search.php',
        // minLength: 1,
        focus: function( event, ui ) {
         $( "#product_search" ).val( ui.item.value );
@@ -10,3 +10,4 @@ $( "#product_search" ).autocomplete({
         return true;
     }
 });
+

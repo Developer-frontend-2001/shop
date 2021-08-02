@@ -14,6 +14,7 @@ if (isset($_POST['name']) && isset($_POST['category_id']) && isset($_POST['amoun
     $category_id = $_POST['category_id'];
 	$amount = $_POST['amount'];
 	$in_stock = $_POST['in_stock'];
+    $content = $_POST['content'];
 
 	$upload_folder = "../images/";
 	$errors = array();
@@ -40,7 +41,7 @@ if (isset($_POST['name']) && isset($_POST['category_id']) && isset($_POST['amoun
 
         $file_url = $upload_folder.$file_name;
         
-        $sql = "insert into product(name, category_id, amount, in_stock, picture) values('$name', $category_id, $amount, $in_stock, '$file_url')";
+        $sql = "INSERT INTO product(name, category_id, amount, in_stock, picture, content) VALUES('$name', $category_id, $amount, $in_stock, '$file_url', '$content')";
         
         if ($conn->query($sql) === TRUE) {
         	echo "Yuklandi";
@@ -97,6 +98,11 @@ if (isset($_POST['name']) && isset($_POST['category_id']) && isset($_POST['amoun
 				<div class="col-md-12">
 					Rasmi: <input type="file" class="form-control" name="picture" required>
 				</div>
+                <div class="col-md-12">
+                    <label for="textarea">Mahsulot haqida</label>
+                    <textarea name="content" id="textarea" cols="30" rows="10"></textarea>
+                </div>
+                
 				<br>
 				<div class="col-md-12">
 					<button type="submit" class="btn btn-primary">Saqlash</button>

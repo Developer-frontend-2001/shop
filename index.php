@@ -115,5 +115,23 @@ session_start();
 			}
 		});
 	});
+
+	$(".btn_search").click(function(){
+		let name = $("#product_search").val();
+		$.ajax({
+			method: "GET",
+			url: "search_product.php",
+			data: { name: name },
+			success: function(data) {
+				location.href = data;
+				console.log(data);
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR);
+				console.log(textStatus);
+				console.log(errorThrown);
+			}
+		});
+	});
 </script>
 <script src="js/search_selectors.js"></script>

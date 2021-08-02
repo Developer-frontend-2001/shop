@@ -29,7 +29,7 @@ $result_users = mysqli_fetch_assoc($result_users);
             <?php endwhile ?>
         </ul>
         
-        <form method="" class="form-inline my-2 my-lg-0  d-flex flex-direction">
+        <form method="POST" class="form-inline my-2 my-lg-0  d-flex flex-direction">
             <input class="form-control mr-sm-2 mx-2" id="product_search" name="search" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
             <button class="btn_search btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
@@ -51,24 +51,3 @@ $result_users = mysqli_fetch_assoc($result_users);
         </a>
     </div>
 </nav>
-
-<script>
-    $(".btn_search").click(function(){
-        let name = $("#product_search").val();
-        $.ajax({
-            method: "GET",
-            url: "search_product.php",
-            data: { name: name },
-            success: function(data) {
-                console.log(data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR);
-                console.log(textStatus);
-                console.log(errorThrown);
-            }
-        });
-    });
-
-</script>
-

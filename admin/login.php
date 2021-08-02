@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+// session_destroy();
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -39,7 +39,6 @@ function pages($role_name) {
 
       if ($result2) {
         $route = mysqli_fetch_assoc($result2);
-
         $permission_array[] = $route['name'];
       }
     }
@@ -49,62 +48,56 @@ function pages($role_name) {
 }
 
 $msg = '';
-if (!empty($_POST['username']) && !empty($_POST['password'])) {
+if (isset($_POST['username']) && isset($_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
   $username = $_POST['username'];
   $password = $_POST['password'];
+  $sql = "SELECT * FROM users WHERE username=".$username." AND password=".$password." AND status=1";
+  $result_user = mysqli_query($conn, $sql);
+  $user = mysqli_fetch_assoc($result_user);
+  $_SESSION['customer_id'] = NULL;
+  $sql_customer = "SELECT * FROM `customer` WHERE user_id='".$user['id']."'";
+  $result_customer = mysqli_query($conn, $sql_customer);
+  $customer = mysqli_fetch_assoc($result_customer);
 
-  $sql = "SELECT * FROM users WHERE username='$username' AND password='$password' AND status=1";
+  if ($customer) {
+    $_SESSION['customer_id'] = $customer['id'];
+  }
 
-  if($result = $conn->query($sql)) {
-    $user = mysqli_fetch_assoc($result);
+  $_SESSION['valid'] = true;
+  $_SESSION['timeout'] = time();
+  $_SESSION['id'] = $user['id'];
+  $_SESSION['username'] = $user['username'];
+  $_SESSION['role_id'] = $user['role_id'];
 
-    $_SESSION['customer_id'] = NULL;
+  $sql_role = "SELECT * FROM roles WHERE role_id=".$user['role_id'];
 
-    $sql_customer = "SELECT * FROM customer WHERE user_id='".$user['id']."'";
-    if($result = $conn->query($sql_customer)) {
-      $customer = mysqli_fetch_assoc($result);
+  $result = $conn->query($sql_role);
 
-      if ($customer) {
-        $_SESSION['customer_id'] = $customer['id'];
-      }
+  if ($result) {
+    $role = mysqli_fetch_assoc($result);
+
+    if ($role) {
+      $role_name = $role['role_name'];
+
+
+      pages($role_name);
+
+      $_SESSION['pages'] = $permission_array;
     }
+  }
+  if ($product_url) {
+    header("Location: ".$product_url);
+  }
+  elseif ($_SESSION['cart']['count'] > 0) {
 
-    $_SESSION['valid'] = true;
-    $_SESSION['timeout'] = time();
-    $_SESSION['id'] = $user['id'];
-    $_SESSION['username'] = $user['username'];
-    $_SESSION['role_id'] = $user['role_id'];
-
-    $sql_role = "SELECT * FROM roles WHERE role_id=".$user['role_id'];
-
-    $result = $conn->query($sql_role);
-
-    if ($result) {
-      $role = mysqli_fetch_assoc($result);
-
-      if ($role) {
-        $role_name = $role['role_name'];
-
-
-        pages($role_name);
-
-        $_SESSION['pages'] = $permission_array;
-      }
-    }
-    if ($product_url) {
-      header("Location: ".$product_url);
-    }
-    elseif ($_SESSION['cart']['count'] > 0) {
-
-      echo("<script>location.href = 'cabinet.php';</script>");
-
-    } else {
-      echo("<script>location.href = 'index.php';</script>");
-    }
+    echo("<script>location.href = 'cabinet.php';</script>");
 
   } else {
-    $msg = 'Username yoki parol xato';
+    echo("<script>location.href = 'index.php';</script>");
   }
+
+} else {
+  $msg = 'Username yoki parol xato';
 }
 ?>
 
