@@ -8,6 +8,9 @@ $cart_count = (isset($_SESSION['cart']) && isset($_SESSION['cart']['count'])) ? 
 $users = "SELECT * FROM users WHERE username ='".$username."'";
 $result_users = mysqli_query($conn, $users);
 $result_users = mysqli_fetch_assoc($result_users);
+// if (isset($_POST['search']) && $_POST['search']) {
+//     $_SESSION['search_name'] = $_POST['search'];
+// }
 ?>
 <nav class=" navbar navbar-expand-lg navbar-light bg-light fixed-top" style="z-index: 1;">
     <a class="navbar-brand" href="index.php">Sport magazin</a>
@@ -26,9 +29,9 @@ $result_users = mysqli_fetch_assoc($result_users);
             <?php endwhile ?>
         </ul>
         
-        <form class="form-inline my-2 my-lg-0  d-flex flex-direction" action="search.php">
+        <form method="" class="form-inline my-2 my-lg-0  d-flex flex-direction">
             <input class="form-control mr-sm-2 mx-2" id="product_search" name="search" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn_search btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
 
     </div>
@@ -48,3 +51,24 @@ $result_users = mysqli_fetch_assoc($result_users);
         </a>
     </div>
 </nav>
+
+<script>
+    $(".btn_search").click(function(){
+        let name = $("#product_search").val();
+        $.ajax({
+            method: "GET",
+            url: "search_product.php",
+            data: { name: name },
+            success: function(data) {
+                console.log(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        });
+    });
+
+</script>
+
