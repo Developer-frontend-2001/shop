@@ -51,11 +51,11 @@ $msg = '';
 if (isset($_POST['username']) && isset($_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
   $username = $_POST['username'];
   $password = $_POST['password'];
-  $sql = "SELECT * FROM users WHERE username=".$username." AND password=".$password." AND status=1";
+  $sql = "SELECT * FROM users WHERE username='".$username."' AND password=".$password." AND status=1";
   $result_user = mysqli_query($conn, $sql);
   $user = mysqli_fetch_assoc($result_user);
   $_SESSION['customer_id'] = NULL;
-  $sql_customer = "SELECT * FROM `customer` WHERE user_id='".$user['id']."'";
+  $sql_customer = "SELECT * FROM `customer` WHERE user_id=".$user['id'];
   $result_customer = mysqli_query($conn, $sql_customer);
   $customer = mysqli_fetch_assoc($result_customer);
 

@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : 'Gita';
 $role_id = isset($_SESSION['role_id']) ? $_SESSION['role_id'] : NULL;
