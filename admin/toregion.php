@@ -1,7 +1,7 @@
 <?php
+include "report.php";
+use repport\Report;
 require_once "auth.php";
-require_once "../db.php";
-
 require_once "header.php";
 
 require_once "sidebar.php";
@@ -30,14 +30,14 @@ require_once "sidebar.php";
 						  </thead>
 						  <tbody>
 							<?php
-
-							$sql = "SELECT region.name, COUNT(orders.id) as soni FROM `orders` INNER JOIN customer ON customer.id = orders.customer_id INNER JOIN region ON region.id = customer.region_id GROUP BY region.name";
 							$i = 1;
-							foreach ($conn->query($sql) as $row) {
+							$db = new Report();
+							$as = $db->toregion();
+							foreach ($as as $item) {
 							    echo "<tr>";
 							    echo "<th scope='row'>" . $i++ . "</th>";
-							    echo "<td>" . $row['name'] . "</td>";
-							    echo "<td>" . $row['soni'] . "</td>";
+							    echo "<td>" . $item['name'] . "</td>";
+							    echo "<td>" . $item['soni'] . "</td>";
 							    echo "</tr>";
 							}
 							?>
